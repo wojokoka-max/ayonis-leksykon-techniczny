@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Ayonis Leksykon</title>
+  <rect width="64" height="64" rx="16" fill="#10251f"/>
+  <path d="M16 48 27 16h10l11 32h-8l-2.5-8H26.5L24 48h-8Zm13-15h6l-3-10-3 10Z" fill="#f6fbf7"/>
+  <circle cx="49" cy="15" r="5" fill="#c86d4f"/>
+</svg>
+
