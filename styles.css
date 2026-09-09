@@ -149,6 +149,11 @@ h1 em { color: var(--accent); font-style: italic; }
 .detail-section h3 { margin-bottom: 10px; color: var(--accent); font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
 .detail-section p { margin-bottom: 0; color: var(--ink); font-size: 14px; line-height: 1.65; }
 .code-block { overflow-x: auto; padding: 16px; border-radius: 7px; color: #dcebe1; background: var(--deep); font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+.command-example { display: grid; gap: 9px; }
+.command-example .code-block { border: 1px solid color-mix(in srgb, var(--category-color, #8c6aa8) 38%, var(--deep)); }
+.copy-button { justify-self: start; min-height: 34px; padding: 0 11px; border: 1px solid var(--line); border-radius: 6px; color: var(--deep); background: var(--mint); font-size: 12px; font-weight: 700; transition: transform .18s ease, border-color .18s ease; }
+.copy-button:hover { border-color: var(--category-color, #8c6aa8); transform: translateY(-1px); }
+.copy-status { min-height: 17px; color: var(--muted); font-size: 12px; }
 .related-list { display: flex; flex-wrap: wrap; gap: 7px; }
 .related-term { padding: 7px 10px; border: 1px solid var(--line); border-radius: 5px; color: var(--deep); background: var(--surface-soft); font-size: 12px; font-weight: 600; }
 .detail-actions { display: flex; gap: 8px; margin-top: 25px; }
@@ -225,3 +230,4 @@ h1 em { color: var(--accent); font-style: italic; }
   .detail-header h2 { font-size: 39px; }
   .add-dialog { padding: 23px 19px; }
 }
+
