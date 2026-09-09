@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10251f" />
+    <meta name="description" content="Ayonis Leksykon — osobisty leksykon technologii, AI i tworzenia stron." />
+    <title>Ayonis Leksykon — technologie i AI</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">S</div>
+          <div>
+            <strong>Ayonis Leksykon</strong>
+            <span>technologie · AI · web</span>
+          </div>
+        </div>
+
+        <button class="add-button" id="openAddButton" type="button">
+          <span>＋</span> Dodaj własne hasło
+        </button>
+
+        <nav class="main-nav" aria-label="Widoki leksykonu">
+          <button class="nav-item active" data-view="all" type="button"><span>⌘</span> Wszystkie hasła <b id="allCount">0</b></button>
+          <button class="nav-item" data-view="favorites" type="button"><span>☆</span> Ulubione <b id="favoriteCount">0</b></button>
+          <button class="nav-item" data-view="recent" type="button"><span>◷</span> Ostatnio oglądane <b id="recentCount">0</b></button>
+        </nav>
+
+        <div class="sidebar-rule"></div>
+        <div class="sidebar-label">Kategorie</div>
+        <div class="category-list" id="categoryList"></div>
+
+        <div class="sidebar-footnote">
+          <span class="status-dot"></span>
+          <div><strong>Działa lokalnie</strong><small>Twoje hasła zostają na tym urządzeniu</small></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Otwórz menu">☰</button>
+          <div class="breadcrumb"><span>LEKSYKON</span><i>/</i><strong id="breadcrumbCurrent">Wszystkie hasła</strong></div>
+          <div class="top-actions">
+            <button class="shortcut" id="focusSearchButton" type="button"><span>⌕</span> Szukaj <kbd>/</kbd></button>
+            <button class="icon-button" id="themeButton" type="button" aria-label="Przełącz tryb ciemny">☾</button>
+          </div>
+        </header>
+
+        <section class="intro-section">
+          <div class="intro-copy">
+            <p class="eyebrow">TWÓJ TECHNICZNY SKRÓT</p>
+            <h1>Słowa, które<br /><em>porządkują</em> technologię.</h1>
+            <p class="intro-text">Proste definicje, przykłady i kontekst. Wszystko, co warto rozumieć przy pracy z AI, tekstem, kodem i stronami.</p>
+          </div>
+          <div class="intro-note">
+            <div class="note-pin">✦</div>
+            <p>„Nie musisz pamiętać wszystkiego. Wystarczy wiedzieć, gdzie sprawdzić.”</p>
+            <span>— notatka do leksykonu</span>
+          </div>
+        </section>
+
+        <section class="search-panel" aria-label="Wyszukiwanie haseł">
+          <div class="search-input-wrap">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="Wpisz hasło, np. prompt, CSS albo API..." aria-label="Szukaj w leksykonie" />
+            <button class="clear-search" id="clearSearch" type="button" aria-label="Wyczyść wyszukiwanie">×</button>
+          </div>
+          <div class="search-hint"><span>Enter</span> otwiera pierwsze hasło <i>·</i> <span>/</span> przechodzi do wyszukiwarki</div>
+        </section>
+
+        <section class="results-toolbar">
+          <div>
+            <h2 id="resultsTitle">Wszystkie hasła</h2>
+            <p id="resultsSubtitle">Wybierz hasło, żeby zobaczyć definicję i przykład.</p>
+          </div>
+          <div class="view-controls">
+            <span id="resultCount">0 haseł</span>
+            <button class="view-button active" data-layout="grid" type="button" aria-label="Widok kafelków">▦</button>
+            <button class="view-button" data-layout="list" type="button" aria-label="Widok listy">☷</button>
+          </div>
+        </section>
+
+        <section class="term-grid" id="termGrid" aria-live="polite"></section>
+
+        <section class="empty-state" id="emptyState" hidden>
+          <div class="empty-icon">⌕</div>
+          <h3>Nie ma takiego hasła</h3>
+          <p>Spróbuj krótszego słowa albo dodaj własną definicję do leksykonu.</p>
+          <button class="secondary-button" id="emptyAddButton" type="button">＋ Dodaj hasło</button>
+        </section>
+
+        <footer class="app-footer">
+          <span><i class="footer-mark">A</i> Ayonis Leksykon</span>
+          <span>Osobista baza wiedzy · wersja 1.0</span>
+          <button id="resetButton" type="button">Przywróć przykładowe hasła</button>
+        </footer>
+      </main>
+    </div>
+
+    <div class="overlay" id="overlay" hidden></div>
+    <aside class="detail-drawer" id="detailDrawer" aria-label="Szczegóły hasła" aria-hidden="true">
+      <button class="drawer-close" id="closeDrawer" type="button" aria-label="Zamknij szczegóły">×</button>
+      <div id="detailContent"></div>
+    </aside>
+
+    <dialog class="add-dialog" id="addDialog">
+      <form method="dialog" id="addForm">
+        <div class="dialog-heading"><div><p class="eyebrow">NOWE HASŁO</p><h2>Dodaj do Słowobazy</h2></div><button class="drawer-close" value="cancel" aria-label="Zamknij">×</button></div>
+        <p class="dialog-lead">Zapisz własne wyjaśnienie, skrót albo rzecz, do której chcesz wrócić.</p>
+        <label>Nazwa hasła<input name="title" required placeholder="np. RAG" /></label>
+        <label>Kategoria<select name="category" id="categorySelect"></select></label>
+        <label>Krótka definicja<textarea name="definition" required rows="3" placeholder="Wyjaśnij prostymi słowami..."></textarea></label>
+        <label>Przykład użycia<textarea name="example" required rows="3" placeholder="Dodaj przykład, sytuację albo fragment kodu"></textarea></label>
+        <div class="dialog-actions"><button class="text-button" value="cancel">Anuluj</button><button class="primary-button" value="default">Zapisz hasło</button></div>
+      </form>
+    </dialog>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

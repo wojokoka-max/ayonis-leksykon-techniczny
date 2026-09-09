@@ -1,4 +1,3 @@
-# ayonis-leksykon-techniczny
 # Ayonis Leksykon
 
 Osobisty leksykon pojęć związanych z AI, technologią, tworzeniem stron, kodem, komputerami i projektowaniem.
