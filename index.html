@@ -19,6 +19,7 @@
             <span>technologie · AI · web</span>
           </div>
         </div>
+        <button class="sidebar-close" id="closeSidebar" type="button" aria-label="Zamknij menu"><span aria-hidden="true">×</span><span class="sidebar-close-label">Zamknij menu</span></button>
 
         <button class="add-button" id="openAddButton" type="button">
           <span>＋</span> Dodaj własne hasło
@@ -42,7 +43,7 @@
 
       <main class="main-content">
         <header class="topbar">
-          <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Otwórz menu">☰</button>
+          <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Otwórz menu" aria-expanded="false" aria-controls="sidebar">☰</button>
           <div class="breadcrumb"><span>LEKSYKON</span><i>/</i><strong id="breadcrumbCurrent">Wszystkie hasła</strong></div>
           <div class="top-actions">
             <button class="shortcut" id="focusSearchButton" type="button"><span>⌕</span> Szukaj <kbd>/</kbd></button>
@@ -101,6 +102,7 @@
       </main>
     </div>
 
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
     <div class="overlay" id="overlay" hidden></div>
     <aside class="detail-drawer" id="detailDrawer" aria-label="Szczegóły hasła" aria-hidden="true">
       <button class="drawer-close" id="closeDrawer" type="button" aria-label="Zamknij szczegóły">×</button>
