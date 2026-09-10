@@ -261,6 +261,19 @@ function renderCards() {
 
 function render() { renderCategories(); renderNav(); renderCards(); }
 
+function closeSidebarMenu() {
+  els.sidebar.classList.remove('open');
+  els.sidebarBackdrop.hidden = true;
+  els.mobileMenu.setAttribute('aria-expanded', 'false');
+}
+
+function toggleSidebarMenu() {
+  const shouldOpen = !els.sidebar.classList.contains('open');
+  els.sidebar.classList.toggle('open', shouldOpen);
+  els.sidebarBackdrop.hidden = !shouldOpen;
+  els.mobileMenu.setAttribute('aria-expanded', String(shouldOpen));
+}
+
 function toggleFavorite(id) {
   const favorites = getFavorites();
   const next = favorites.includes(id) ? favorites.filter(item => item !== id) : [...favorites, id];
@@ -343,13 +356,13 @@ function addCustomTerm(form) {
 }
 
 function setup() {
-  Object.assign(els, { categoryList: document.querySelector('#categoryList'), categorySelect: document.querySelector('#categorySelect'), allCount: document.querySelector('#allCount'), favoriteCount: document.querySelector('#favoriteCount'), recentCount: document.querySelector('#recentCount'), searchInput: document.querySelector('#searchInput'), clearSearch: document.querySelector('#clearSearch'), termGrid: document.querySelector('#termGrid'), emptyState: document.querySelector('#emptyState'), resultsTitle: document.querySelector('#resultsTitle'), resultsSubtitle: document.querySelector('#resultsSubtitle'), resultCount: document.querySelector('#resultCount'), breadcrumbCurrent: document.querySelector('#breadcrumbCurrent'), overlay: document.querySelector('#overlay'), detailDrawer: document.querySelector('#detailDrawer'), detailContent: document.querySelector('#detailContent'), addDialog: document.querySelector('#addDialog'), addForm: document.querySelector('#addForm') });
+  Object.assign(els, { categoryList: document.querySelector('#categoryList'), categorySelect: document.querySelector('#categorySelect'), allCount: document.querySelector('#allCount'), favoriteCount: document.querySelector('#favoriteCount'), recentCount: document.querySelector('#recentCount'), searchInput: document.querySelector('#searchInput'), clearSearch: document.querySelector('#clearSearch'), termGrid: document.querySelector('#termGrid'), emptyState: document.querySelector('#emptyState'), resultsTitle: document.querySelector('#resultsTitle'), resultsSubtitle: document.querySelector('#resultsSubtitle'), resultCount: document.querySelector('#resultCount'), breadcrumbCurrent: document.querySelector('#breadcrumbCurrent'), overlay: document.querySelector('#overlay'), detailDrawer: document.querySelector('#detailDrawer'), detailContent: document.querySelector('#detailContent'), addDialog: document.querySelector('#addDialog'), addForm: document.querySelector('#addForm'), sidebar: document.querySelector('#sidebar'), mobileMenu: document.querySelector('#mobileMenu'), closeSidebar: document.querySelector('#closeSidebar'), sidebarBackdrop: document.querySelector('#sidebarBackdrop') });
   loadTerms(); document.body.classList.toggle('dark-mode', state.dark); render();
   els.searchInput.addEventListener('input', event => { state.query = event.target.value; els.clearSearch.classList.toggle('visible', Boolean(state.query)); renderCards(); });
   els.searchInput.addEventListener('keydown', event => { if (event.key === 'Enter' && filteredTerms()[0]) openDetail(filteredTerms()[0].id); });
   els.clearSearch.addEventListener('click', () => { state.query = ''; els.searchInput.value = ''; els.clearSearch.classList.remove('visible'); renderCards(); els.searchInput.focus(); });
-  els.categoryList.addEventListener('click', event => { const button = event.target.closest('[data-category]'); if (!button) return; state.activeCategory = state.activeCategory === button.dataset.category ? null : button.dataset.category; state.view = 'all'; render(); });
-  document.querySelector('.main-nav').addEventListener('click', event => { const button = event.target.closest('[data-view]'); if (!button) return; state.view = button.dataset.view; state.activeCategory = null; render(); });
+  els.categoryList.addEventListener('click', event => { const button = event.target.closest('[data-category]'); if (!button) return; state.activeCategory = state.activeCategory === button.dataset.category ? null : button.dataset.category; state.view = 'all'; render(); closeSidebarMenu(); });
+  document.querySelector('.main-nav').addEventListener('click', event => { const button = event.target.closest('[data-view]'); if (!button) return; state.view = button.dataset.view; state.activeCategory = null; render(); closeSidebarMenu(); });
   els.termGrid.addEventListener('click', event => { const group = event.target.closest('[data-group-category]'); if (group) { state.activeCategory = group.dataset.groupCategory; state.view = 'all'; render(); return; } const favorite = event.target.closest('[data-favorite]'); if (favorite) return toggleFavorite(favorite.dataset.favorite); const open = event.target.closest('[data-open]'); if (open) openDetail(open.dataset.open); });
   document.querySelector('.view-controls').addEventListener('click', event => { const button = event.target.closest('[data-layout]'); if (!button) return; state.layout = button.dataset.layout; document.querySelectorAll('.view-button').forEach(item => item.classList.toggle('active', item === button)); renderCards(); });
   document.querySelector('#focusSearchButton').addEventListener('click', () => els.searchInput.focus());
@@ -358,9 +371,9 @@ function setup() {
   els.detailContent.addEventListener('click', event => { const copy = event.target.closest('[data-copy-example]'); if (copy) return copyExample(copy.dataset.copyExample, copy); const fav = event.target.closest('[data-detail-favorite]'); if (fav) return toggleFavorite(fav.dataset.detailFavorite); const related = event.target.closest('[data-related]'); if (related) { const term = state.terms.find(item => item.title.toLocaleLowerCase('pl-PL') === related.dataset.related.toLocaleLowerCase('pl-PL')); if (term) openDetail(term.id); } });
   document.querySelectorAll('#openAddButton, #emptyAddButton').forEach(button => button.addEventListener('click', () => els.addDialog.showModal()));
   els.addForm.addEventListener('submit', event => { event.preventDefault(); addCustomTerm(els.addForm); });
-  document.querySelector('#mobileMenu').addEventListener('click', () => document.querySelector('#sidebar').classList.toggle('open'));
+  els.mobileMenu.addEventListener('click', toggleSidebarMenu); els.closeSidebar.addEventListener('click', closeSidebarMenu); els.sidebarBackdrop.addEventListener('click', closeSidebarMenu);
   document.querySelector('#resetButton').addEventListener('click', () => { if (!confirm('Usunąć własne hasła i przywrócić przykładową zawartość?')) return; localStorage.removeItem('slowo-custom-terms'); localStorage.removeItem('slowo-removed-terms'); state.terms = [...seedTerms, ...extraTerms, ...commandTerms]; state.view = 'all'; state.activeCategory = null; render(); });
-  document.addEventListener('keydown', event => { if (event.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') { event.preventDefault(); els.searchInput.focus(); } if (event.key === 'Escape') closeDetail(); });
+  document.addEventListener('keydown', event => { if (event.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') { event.preventDefault(); els.searchInput.focus(); } if (event.key === 'Escape') { closeDetail(); closeSidebarMenu(); } });
 }
 
 setup();
